@@ -1,0 +1,84 @@
+ALTER TABLE public.customers ADD address_1 text NULL;
+ALTER TABLE public.customers ADD address_2 text NULL;
+ALTER TABLE public.customers ADD mobile text NULL;
+ALTER TABLE public.customers RENAME COLUMN sibling_address TO sibling_address_1;
+ALTER TABLE public.customers ADD sibling_address_2 text NULL;
+ALTER TABLE public.customers ALTER COLUMN sibling_job DROP NOT NULL;
+ALTER TABLE public.customers ALTER COLUMN sibling_birth_place DROP NOT NULL;
+ALTER TABLE public.customers ALTER COLUMN sibling_birth_date DROP NOT NULL;
+ALTER TABLE public.customers ALTER COLUMN sibling_address_1 DROP NOT NULL;
+
+ALTER TABLE public.units_targets ALTER COLUMN amount TYPE float8 USING amount::float8;
+ALTER TABLE public.units_repayments ALTER COLUMN money_loan TYPE float8 USING money_loan::float8;
+ALTER TABLE public.units_repayments ALTER COLUMN periode TYPE float8 USING periode::float8;
+ALTER TABLE public.units_repayments ALTER COLUMN capital_lease TYPE float8 USING capital_lease::float8;
+ALTER TABLE public.units_regularpawns ALTER COLUMN amount TYPE float8 USING amount::float8;
+ALTER TABLE public.units_regularpawns ALTER COLUMN estimation TYPE float8 USING estimation::float8;
+ALTER TABLE public.units_regularpawns ALTER COLUMN "admin" TYPE float8 USING "admin"::float8;
+ALTER TABLE public.units_mortages ALTER COLUMN interest TYPE float8 USING interest::float8;
+ALTER TABLE public.units_mortages ALTER COLUMN estimation TYPE float8 USING estimation::float8;
+ALTER TABLE public.units_mortages ALTER COLUMN amout_loan TYPE float8 USING amout_loan::float8;
+ALTER TABLE public.units_mortages ALTER COLUMN amount_admin TYPE float8 USING amount_admin::float8;
+ALTER TABLE public.units_loaninstallments ALTER COLUMN money_loan TYPE float8 USING money_loan::float8;
+ALTER TABLE public.units_loaninstallments ALTER COLUMN capital_lease TYPE float8 USING capital_lease::float8;
+ALTER TABLE public.units_dailycashs ALTER COLUMN amount TYPE float8 USING amount::float8;
+
+ALTER TABLE public.units_mortages ADD id_unit int NOT NULL DEFAULT 0;
+ALTER TABLE public.units_mortages RENAME COLUMN amout_loan TO amount_loan;
+ALTER TABLE public.units_mortages ALTER COLUMN date_auction DROP NOT NULL;
+ALTER TABLE public.units_mortages ALTER COLUMN deadline DROP NOT NULL;
+ALTER TABLE public.units_mortages ALTER COLUMN date_sbk DROP NOT NULL;
+ALTER TABLE public.units_mortages ALTER COLUMN status_transaction DROP NOT NULL;
+
+ALTER TABLE public.units_regularpawns ADD description_1 text NULL;
+ALTER TABLE public.units_regularpawns ADD description_2 text NULL;
+ALTER TABLE public.units_regularpawns ADD description_3 varchar NULL;
+ALTER TABLE public.units_regularpawns ADD description_4 text NULL;
+
+ALTER TABLE public.units_regularpawns ADD status_transaction varchar NULL;
+ALTER TABLE public.units_regularpawns ADD capital_lease float8 NULL;
+ALTER TABLE public.units_regularpawns ADD periode int NULL;
+ALTER TABLE public.units_regularpawns ADD installment float8 NULL;
+ALTER TABLE public.units_regularpawns ADD id_unit int NOT NULL;
+
+ALTER TABLE public.units_regularpawns ADD type_item varchar(255) NULL DEFAULT P;
+ALTER TABLE public.units_regularpawns ADD type_bmh varchar NULL;
+
+ALTER TABLE public.units_loaninstallments ADD id_unit int NOT NULL;
+ALTER TABLE public.units_loaninstallments ADD nic varchar(255) NOT NULL;
+
+ALTER TABLE public.units_loaninstallments RENAME COLUMN money_loan TO amount_loan;
+ALTER TABLE public.units_loaninstallments ALTER COLUMN amount_loan DROP NOT NULL;
+ALTER TABLE public.units_loaninstallments ALTER COLUMN amount_loan SET NOT NULL;
+ALTER TABLE public.units_loaninstallments ALTER COLUMN date_repayment DROP NOT NULL;
+ALTER TABLE public.units_loaninstallments ALTER COLUMN capital_lease DROP NOT NULL;
+ALTER TABLE public.units_loaninstallments ALTER COLUMN capital_lease SET NOT NULL;
+ALTER TABLE public.units_loaninstallments ALTER COLUMN periode DROP NOT NULL;
+
+ALTER TABLE public.units_loaninstallments ADD detail text NULL;
+
+ALTER TABLE public.categories ALTER COLUMN "type" DROP NOT NULL;
+ALTER TABLE public.categories ALTER COLUMN user_create DROP NOT NULL;
+ALTER TABLE public.categories ALTER COLUMN user_update DROP NOT NULL;
+ALTER TABLE public.categories ALTER COLUMN date_update DROP NOT NULL;
+ALTER TABLE public.categories ALTER COLUMN date_create DROP NOT NULL;
+
+ALTER TABLE public.units_dailycashs ADD id_category int NULL;
+ALTER TABLE public.units_dailycashs DROP COLUMN "type";
+
+ALTER TABLE public.categories ADD "source" int NULL;
+ALTER TABLE public.categories ALTER COLUMN "type" DROP DEFAULT;
+
+
+ALTER TABLE mis.users ADD id_unit INT UNSIGNED DEFAULT 0 NOT NULL;
+ALTER TABLE mis.users CHANGE id_unit id_unit INT UNSIGNED DEFAULT 0 NOT NULL AFTER id_level;
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+CREATE TABLE public.categories (
+	id serial NOT NULL,
+	category varchar(255) NOT NULL,
+	"type" varchar(255) NOT NULL DEFAULT 'CASH_IN'::character varying,
+	status varchar NOT NULL DEFAULT 'PUBLISH'::character varying,
+	date_create timestamp NOT NULL,
+	date_update timestamp NOT NULL,
+	user_create int4 NOT NULL,
+	user_update int4 NOT NULL
+);
+
+-- Column comments
+
+COMMENT ON COLUMN public.categories."type" IS 'CASH_IN
+CASH_OUT';
+COMMENT ON COLUMN public.categories.status IS 'PUBLISH
+UNPUBLISH
+ARCHIVED
+DELETED
+DRAFT';
+
+
+CREATE TABLE `inboxes` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `compose_from` varchar(255) DEFAULT NULL,
+  `status` enum('PUBLISH','DRAFT','UNPUBLISH','DELETED') DEFAULT 'PUBLISH',
+  `date_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_create` int(11) NOT NULL,
+  `date_update` datetime NOT NULL,
+  `user_update` int(10) DEFAULT NULL,
+  `compose_to` varchar(255) DEFAULT NULL,
+  `compose_cc` varchar(255) DEFAULT NULL,
+  `compose_bcc` varchar(255) DEFAULT NULL,
+  `compose_subject` varchar(255) DEFAULT NULL,
+  `compose_body` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1
+
+CREATE TABLE `inboxes_files` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `filename` text,
+  `mime` varchar(255) DEFAULT NULL,
+  `status` enum('PUBLISH','DRAFT','UNPUBLISH','DELETED') DEFAULT 'PUBLISH',
+  `date_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_create` int(10) NOT NULL DEFAULT '0',
+  `user_update` int(10) NOT NULL DEFAULT '0',
+  `id_inbox` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1
