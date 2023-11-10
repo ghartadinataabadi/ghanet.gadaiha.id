@@ -2,11 +2,11 @@
 
 .htaccess
 application/.htaccess
-storage
+# storage
 
-application/cache/*
-/application/config/*
-application/config/config.php
+# application/cache/*
+# /application/config/*
+# application/config/config.php
 !application/cache/index.html
 
 application/logs/*
