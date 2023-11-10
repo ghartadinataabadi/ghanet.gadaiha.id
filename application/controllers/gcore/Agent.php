@@ -35,7 +35,6 @@ class Agent extends Authenticated
 	 */
 	public function index()
 	{
-	    echo 'yess'; exit;
 		// $user = $this->session->userdata( 'user' )->regionId;
 		// var_dump($user); exit;
 
