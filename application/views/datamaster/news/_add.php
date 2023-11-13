@@ -22,7 +22,6 @@ $this->load->view('temp/MenuBar.php');
 						<label class="col-md-2" for="cover">Cover</label>
 						<div class="col-md-10">
 							<input type="file" class="form-control" name="cover"
-							accept="image/*"
 							 id="cover"/>
 						</div>
 					</div>
