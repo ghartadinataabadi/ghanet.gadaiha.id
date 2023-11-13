@@ -9,7 +9,7 @@ class Regularpawns extends ApiController
 		parent::__construct();
 		$this->load->model('RegularPawnsModel', 'regulars');
 		$this->load->model('CustomersModel', 'customers');
-		$this->load->model('regularpawnshistoryModel', 'customerrepair');
+		$this->load->model('RegularpawnshistoryModel', 'customerrepair');
 		$this->load->model('UnitsModel', 'units');
 		$this->load->model('AreasModel', 'model');
 		$this->load->model('UnitsSmartphone', 'smartphone');
