@@ -1,6 +1,4 @@
-
 <?php
-
 require_once APPPATH.'controllers/api/ApiController.php';
 class Agent extends ApiController
 {
