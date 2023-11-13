@@ -75,22 +75,12 @@ class Contents extends ApiController
 				if($this->model->insert($data)){
 					$this->model->db->order_by('id','desc');
 					$first = $this->model->all()[0];
-					if ( ! $this->upload->do_upload('cover'))
-					{
-						$error = array('error' => $this->upload->display_errors());
-		
-						return $this->sendMessage(false, $error,500);
-					}
-					else
-					{
-						$data['cover'] = $this->upload->data('file_name');		
-					}
 					if($attachmentPost = $this->input->post('attachments')){
 						foreach ($attachmentPost as $key => $value) {
-							$this->attachments->insert([
+							$this->attachments->update([
 								'id_news_content'	=> $first->id
 							], [
-								'file_name'	=> $value
+								'id'	=> $value
 							]);
 						}
 					}
