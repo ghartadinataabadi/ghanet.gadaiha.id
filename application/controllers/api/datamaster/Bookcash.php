@@ -163,7 +163,7 @@ class Bookcash extends ApiController
                 
                 } else {
                     if ( $this->model->insert( $data ) ) {
-                         $idUnitCashBook = $this->db->insert_id();
+                         $idUnitCashBook = $this->model->last()->id;
 
                         $kertas_pecahan = $post['k_pecahan'];
                         for ( $i = 0; $i < count( $kertas_pecahan );
