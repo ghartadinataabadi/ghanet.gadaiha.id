@@ -72,7 +72,7 @@ $this->load->view('temp/MenuBar.php');
 					<div class="form-group row">
 						<label class="col-md-2" for="description">Deskripsi</label>
 						<div class="col-md-10">
-							<textarea type="text" class="form-control" rows="5" id="description" name="description"></textarea>
+							<textarea type="text" class="form-control" rows="5" id="description" name="description">sjk</textarea>
 						</div>
 					</div>
 				</div>
