@@ -515,6 +515,47 @@ function popView(el){
 		});
 }
 
+$('.select2').select2();
+$('.select2').on('select2:closing', function (e) {
+    let branch_id = $('#branch_id').val();
+    var search = $('.select2-search__field').val();
+    console.log('Final Search Value: ' + search);
+
+    $.ajax({
+        type : 'GET',
+        url : "<?php echo base_url("api/gcore/datamaster/units_search"); ?>/"+branch_id + "/" + search,
+        dataType : "json",
+        success:function(res){
+            console.log(res);
+            let template = '';
+            res.data.forEach(res=>{
+                console.log(res.name);
+                session = `<?php echo $this->session->userdata( 'user' )->level ?>`
+                
+                if(session == 'area'){
+                    
+                    sessionId = `<?php echo $this->session->userdata( 'user' )->area_id ?>`
+                    console.log('res', res.area_id)
+                    console.log('session', sessionId)
+                    if (sessionId == res.area_id){
+                        template += `<option value="${res.id}">${res.name}</option>`;
+                    }
+                }else{
+                    template += `<option value="${res.id}">${res.name}</option>`;
+                }
+                
+            })
+            
+            $('[name="unit_id"]').empty();
+            template += `<option value="all">All</option>`;
+            $('[name="unit_id"]').append(template);
+        },
+        error:function(e){
+            console.log(e);
+        }
+    });
+});
+
 jQuery(document).ready(function() {
     var level = $('#level').val();
 

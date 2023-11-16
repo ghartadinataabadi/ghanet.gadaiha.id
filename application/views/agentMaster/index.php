@@ -105,7 +105,7 @@ $this->load->view('temp/MenuBar.php');
 						</div>
 						<div class="col-md-2">
 							<label class="col-form-label">Unit</label>
-							<select class="form-control" name="unit_id" id="unit_id">
+							<select class="form-control select2" name="unit_id" id="unit_id" style ="width: 100%">
 							</select>
 						</div>
 						<?php elseif ( $this->session->userdata( 'user' )->level == 'cabang' ):?>
@@ -113,7 +113,7 @@ $this->load->view('temp/MenuBar.php');
 						<input type = 'hidden' name = 'branch_id' id='branch_id' value = "<?php echo $this->session->userdata('user')->branch_id;?>">
 						<div class="col-md-2">
 							<label class="col-form-label">Unit</label>
-							<select class="form-control" name="unit_id" id="unit_id">
+							<select class="form-control select2" name="unit_id" id="unit_id" style ="width: 100%">
 							</select>
 						</div>
 						<?php else:?>
@@ -140,7 +140,7 @@ $this->load->view('temp/MenuBar.php');
 						</div>
 						<div class="col-md-2">
 							<label class="col-form-label">Unit</label>
-							<select class="form-control" name="unit_id" id="unit_id">
+							<select class="form-control select2" name="unit_id" id="unit_id" style ="width: 100%">
 							     <!--<option value = 'all'>All</option>-->
 							</select>
 						</div>
