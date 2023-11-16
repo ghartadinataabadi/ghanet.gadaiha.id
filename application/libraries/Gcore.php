@@ -275,6 +275,35 @@ class Gcore {
         return json_decode($res);
     }
 
+    public function units_search($branch_id, $search)
+    {
+        $url = $this->url_master_log.'/api/v1/unit_offices/autocomplete';
+        $dataArray = array();
+        if ($branch_id != 'all') {
+            $dataArray['branch_office_id'] = $branch_id;
+        }
+        if (!empty($search)) {
+            $dataArray['query'] = $search;
+        }
+
+        $data = http_build_query($dataArray);
+        $getUrl = $url."?".$data;
+        $crl = curl_init();
+
+        $headr = array();
+        $headr[] = 'Content-type: application/json';
+        // $headr[] = 'Authorization: Bearer '.$this->token;
+        curl_setopt($crl, CURLOPT_URL,$getUrl);
+        curl_setopt($crl,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+        // return the transfer as a string 
+        curl_setopt($crl, CURLOPT_RETURNTRANSFER, 1); 
+        curl_setopt($crl, CURLOPT_HTTPHEADER,$headr);
+        $res = curl_exec($crl);
+        curl_close($crl);  
+        return json_decode($res);
+    }
+
     //region
     public function region($page)
     {   

@@ -23,6 +23,12 @@ class Datamaster extends ApiController
 	public function units($branchId)
 	{
         return $this->sendMessage($this->gcore->units($branchId)->data,'Successfully');        
-    }
+  }
+
+	public function units_search($branchId, $search)
+	{
+        return $this->sendMessage($this->gcore->units_search($branchId, $search)->data,'Successfully');        
+  }
+
 
 }
