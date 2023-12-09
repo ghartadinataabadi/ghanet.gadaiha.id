@@ -150,6 +150,18 @@ function initCariForm(){
 						template += "<td class='text-right'>"+data.insurance_item_name+"</td>";
 						template += "<td class='text-right'>"+data.created_by+"</td>";
 						template += "<td class='text-right'>"+data.approved_by+"</td>";
+                        if(data.sa_code){
+                            sa_code = data.sa_code;
+                        }else{
+                            sa_code = '-';
+                        }
+                        if(data.agent){
+                            agent = data.agent;
+                        }else{
+                            agent = '-';
+                        }
+                        template += "<td class='text-right'>"+sa_code+"</td>";
+                        template += "<td class='text-right'>"+agent+"</td>";
 						// template += "<td class='text-left'>"+data.description+"</td>";
 						template += '</tr>';
 						no++;

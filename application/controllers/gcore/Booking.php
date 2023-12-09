@@ -116,13 +116,23 @@ class Booking extends Authenticated
 		$objPHPExcel->getActiveSheet()->setCellValue('T1', 'Created By');
 		$objPHPExcel->getActiveSheet()->getColumnDimension('U');
 		$objPHPExcel->getActiveSheet()->setCellValue('U1', 'Approved By');
+		
 		$objPHPExcel->getActiveSheet()->getColumnDimension('V');
-		$objPHPExcel->getActiveSheet()->setCellValue('V1', 'Deskripsi Barang');
+		$objPHPExcel->getActiveSheet()->setCellValue('V1', 'Kode Referral');
+		$objPHPExcel->getActiveSheet()->getColumnDimension('W');
+		$objPHPExcel->getActiveSheet()->setCellValue('W1', 'Agent');
+		$objPHPExcel->getActiveSheet()->getColumnDimension('X');
+		$objPHPExcel->getActiveSheet()->setCellValue('X1', 'Deskripsi Barang');
 		
 	        if($get = $this->input->post()){
 				 $dateEnd = $get['date-end'];
 				$this->pawn->db2
-							->select("customers.cif_number as cif, pawn_transactions.office_name,pawn_transactions.product_name,customers.name as customer,pawn_transactions.sge, pawn_transactions.contract_date, pawn_transactions.due_date, pawn_transactions.auction_date,pawn_transactions.estimated_value, pawn_transactions.loan_amount,pawn_transactions.admin_fee,pawn_transactions.interest_rate,pawn_transactions.insurance_item_name,pawn_transactions.created_by,pawn_transactions.approved_by,pawn_transactions.maximum_loan_percentage,pawn_transactions.monthly_fee, pawn_transactions.parent_sge as parent,
+							->select("customers.cif_number as cif, pawn_transactions.office_name,pawn_transactions.product_name,
+								customers.name as customer,pawn_transactions.sge, pawn_transactions.contract_date, pawn_transactions.due_date, 
+								pawn_transactions.auction_date,pawn_transactions.estimated_value, pawn_transactions.loan_amount,pawn_transactions.admin_fee,
+								pawn_transactions.interest_rate,pawn_transactions.insurance_item_name,pawn_transactions.created_by,pawn_transactions.approved_by,
+								pawn_transactions.maximum_loan_percentage,pawn_transactions.monthly_fee, pawn_transactions.parent_sge as parent,
+								sa_code, sale_agents.name as agent,
 								sum(transaction_insurance_items.net_weight) as gramasi, count(transaction_insurance_items.id) as qty, 
 								array_to_string(array_agg(transaction_insurance_items.carats), ' | ') as karatase,
 								transaction_pawn_electronics.insurance_item_merk as merk,
@@ -133,6 +143,7 @@ class Booking extends Authenticated
 									->join('customers','customers.id = pawn_transactions.customer_id')
 									->join('transaction_insurance_items','pawn_transactions.id = transaction_insurance_items.pawn_transaction_id', 'left')
 									->join('transaction_pawn_electronics','pawn_transactions.id = transaction_pawn_electronics.pawn_transaction_id', 'left')
+									->join('sale_agents', 'sale_agents.referral_code=pawn_transactions.sa_code', 'left')
 									->where('contract_date >=', $get['date-start'])
 									->where('contract_date <=', $get['date-end'])
 									->where('pawn_transactions.deleted_at ', null)
@@ -151,7 +162,13 @@ class Booking extends Authenticated
 										$this->pawn->db2->where('pawn_transactions.product_name',$get['product']);
 									}
 
-									$data = $this->pawn->db2->group_by('customers.cif_number, pawn_transactions.office_name,pawn_transactions.product_name,customers.name,pawn_transactions.sge, pawn_transactions.contract_date, pawn_transactions.due_date, pawn_transactions.auction_date,pawn_transactions.estimated_value, pawn_transactions.loan_amount,pawn_transactions.admin_fee,pawn_transactions.interest_rate,pawn_transactions.insurance_item_name,pawn_transactions.created_by,pawn_transactions.approved_by, transaction_pawn_electronics.insurance_item_merk, pawn_transactions.maximum_loan_percentage,pawn_transactions.monthly_fee, pawn_transactions.parent_sge')
+									$data = $this->pawn->db2->group_by('customers.cif_number, pawn_transactions.office_name,
+										pawn_transactions.product_name,customers.name,pawn_transactions.sge, pawn_transactions.contract_date, 
+										pawn_transactions.due_date, pawn_transactions.auction_date,pawn_transactions.estimated_value, 
+										pawn_transactions.loan_amount,pawn_transactions.admin_fee,pawn_transactions.interest_rate,
+										pawn_transactions.insurance_item_name,pawn_transactions.created_by,pawn_transactions.approved_by, 
+										transaction_pawn_electronics.insurance_item_merk, pawn_transactions.maximum_loan_percentage,
+										pawn_transactions.monthly_fee, pawn_transactions.parent_sge, sa_code, sale_agents.name')
 									->order_by('pawn_transactions.contract_date','asc')->get()->result();
 			}
 
@@ -191,7 +208,20 @@ class Booking extends Authenticated
 									$objPHPExcel->getActiveSheet()->setCellValue('S'.$no, $row->auction_date);	//Tanggal Jatuh Tempo
 									$objPHPExcel->getActiveSheet()->setCellValue('T'.$no, $row->created_by);	//Tanggal Jatuh Tempo									
 									$objPHPExcel->getActiveSheet()->setCellValue('U'.$no, $row->approved_by);	//Tanggal Jatuh Tempo	
-									$objPHPExcel->getActiveSheet()->setCellValue('V'.$no, $row->description);				//Deskripsi BJ		 
+
+									if($row->sa_code){
+										$sa_code = $row->sa_code;
+									}else{
+										$sa_code = '-';
+									}
+									if($row->agent){
+										$agent = $row->agent;
+									}else{
+										$agent = '';
+									}
+									$objPHPExcel->getActiveSheet()->setCellValue('V'.$no, $sa_code);
+									$objPHPExcel->getActiveSheet()->setCellvalue('W'.$no, $agent);
+									$objPHPExcel->getActiveSheet()->setCellValue('X'.$no, $row->description);				//Deskripsi BJ		 
 									$no++;
 								}	
 
