@@ -185,6 +185,8 @@ $this->load->view('temp/MenuBar.php');
 									<th class='text-right'>Jenis BJ</th>
 									<th class='text-right'>Created By</th>
 									<th class='text-right'>Approved By</th>
+									<th class='text-right'>Kode Referral</th>
+									<th class='text-right'>Agent</th>
 									<!-- <th class='text-right'>Deskripsi</th> -->
 									<th></th>
 						    	</tr>

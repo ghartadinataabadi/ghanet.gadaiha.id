@@ -28,14 +28,16 @@ class Booking extends ApiController
 		if($get = $this->input->get()){
 
 			$this->pawn->db2
-					->select("customers.cif_number as cif, pawn_transactions.office_name,pawn_transactions.product_name,customers.name as customer,pawn_transactions.sge, pawn_transactions.contract_date, pawn_transactions.due_date, pawn_transactions.auction_date,pawn_transactions.estimated_value, pawn_transactions.loan_amount,pawn_transactions.admin_fee,pawn_transactions.interest_rate,pawn_transactions.insurance_item_name,pawn_transactions.created_by,pawn_transactions.approved_by,
-								transaction_pawn_electronics.insurance_item_merk as merk
-							")
+					->select("customers.cif_number as cif, pawn_transactions.office_name,pawn_transactions.product_name,customers.name as customer,
+					pawn_transactions.sge, pawn_transactions.contract_date, pawn_transactions.due_date, pawn_transactions.auction_date,pawn_transactions.estimated_value, pawn_transactions.loan_amount,pawn_transactions.admin_fee,pawn_transactions.interest_rate,pawn_transactions.insurance_item_name,pawn_transactions.created_by,pawn_transactions.approved_by, sa_code, sale_agents.name as agent,
+					transaction_pawn_electronics.insurance_item_merk as merk
+					")
 								// sum(transaction_insurance_items.net_weight) as gramasi,count(transaction_insurance_items.id) as qty,
 								// array_to_string(array_agg(transaction_insurance_items.carats), ' | ') as karatase,
 					->from('pawn_transactions')
-					->join('customers','customers.id = pawn_transactions.customer_id')
+					->join('customers','customers.id = pawn_transactions.customer_id', 'left')
 					->join('transaction_pawn_electronics','pawn_transactions.id = transaction_pawn_electronics.pawn_transaction_id', 'left')
+					->join('sale_agents', 'sale_agents.referral_code=pawn_transactions.sa_code', 'left')
 					->where('contract_date >=', $get['dateStart'])
 					->where('contract_date <=', $get['dateEnd'])
 					->where('pawn_transactions.deleted_at ', null)
@@ -53,7 +55,7 @@ class Booking extends ApiController
 					if($get['product']){
 						$this->pawn->db2->where('pawn_transactions.product_name',$get['product']);
 					}
-			$data = $this->pawn->db2->group_by('customers.cif_number, pawn_transactions.office_name,pawn_transactions.product_name,customers.name,pawn_transactions.sge, pawn_transactions.contract_date, pawn_transactions.due_date, pawn_transactions.auction_date,pawn_transactions.estimated_value, pawn_transactions.loan_amount,pawn_transactions.admin_fee,pawn_transactions.interest_rate,pawn_transactions.insurance_item_name,pawn_transactions.created_by,pawn_transactions.approved_by, transaction_pawn_electronics.insurance_item_merk')
+			$data = $this->pawn->db2->group_by('customers.cif_number, pawn_transactions.office_name,pawn_transactions.product_name,customers.name,pawn_transactions.sge, pawn_transactions.contract_date, pawn_transactions.due_date, pawn_transactions.auction_date,pawn_transactions.estimated_value, pawn_transactions.loan_amount,pawn_transactions.admin_fee,pawn_transactions.interest_rate,pawn_transactions.insurance_item_name,pawn_transactions.created_by,pawn_transactions.approved_by, transaction_pawn_electronics.insurance_item_merk, pawn_transactions.sa_code, sale_agents.name')
 			->order_by('pawn_transactions.contract_date','asc')->get()->result();
 
 			echo json_encode(array(

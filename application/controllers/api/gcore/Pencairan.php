@@ -27,11 +27,12 @@ class Pencairan extends ApiController
 		if($get = $this->input->get()){
 
 			$this->pawn->db2
-					->select("customers.cif_number as cif, office_name,product_name,customers.name as customer,sge,contract_date,due_date,auction_date,estimated_value,loan_amount,admin_fee,interest_rate,insurance_item_name,created_by,approved_by,
-					(select insurance_item_merk from transaction_pawn_electronics where transaction_pawn_electronics.pawn_transaction_id = pawn_transactions.id  and pawn_transactions.deleted_at = null) as merk
+					->select("customers.cif_number as cif, pawn_transactions.office_name,product_name,customers.name as customer,sge,contract_date,due_date,auction_date,estimated_value,loan_amount,admin_fee,interest_rate,insurance_item_name,created_by,approved_by,sa_code, sale_agents.name as agent,
+					(select insurance_item_merk from transaction_pawn_electronics where transaction_pawn_electronics.pawn_transaction_id = pawn_transactions.id  and pawn_transactions.deleted_at = null) as merk,
 								")
 					->from('pawn_transactions')
-					->join('customers','customers.id = pawn_transactions.customer_id')
+					->join('customers','customers.id = pawn_transactions.customer_id', 'left')
+					->join('sale_agents','sale_agents.referral_code = pawn_transactions.sa_code', 'left')
 					->where('contract_date >=', $get['dateStart'])
 					->where('contract_date <=', $get['dateEnd'])
 					->where('pawn_transactions.deleted_at ', null)
@@ -51,6 +52,7 @@ class Pencairan extends ApiController
 						$this->pawn->db2->where('pawn_transactions.product_name',$get['product']);
 					}
 			$data = $this->pawn->db2->order_by('pawn_transactions.contract_date','asc')->get()->result();
+
 			//print_r($this->pawn->db2->last_query());
 
 			echo json_encode(array(

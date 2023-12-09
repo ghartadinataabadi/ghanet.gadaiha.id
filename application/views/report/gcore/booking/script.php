@@ -150,6 +150,19 @@ function initCariForm(){
 						template += "<td class='text-right'>"+data.insurance_item_name+"</td>";
 						template += "<td class='text-right'>"+data.created_by+"</td>";
 						template += "<td class='text-right'>"+data.approved_by+"</td>";
+                        if(data.sa_code){
+                            sa_code = data.sa_code;
+                        }else{
+                            sa_code = '-';
+                        }
+
+                        if(data.agent){
+                            agent = data.agent;
+                        }else{
+                            agent = '-';
+                        }
+                        template += "<td class='text-right'>"+sa_code+"</td>";
+                        template += "<td class='text-right'>"+agent+"</td>";
 						// template += "<td class='text-left'>"+data.description+"</td>";
 						template += '</tr>';
 						no++;
@@ -227,7 +240,7 @@ const initCabang = () => {
         url: "<?php echo base_url("api/gcore/datamaster/branchies"); ?>/" + area_id,
         dataType: "json",
         success: function(res) {
-            let template = '';
+            let template = '<option value="all">All</option>';
             res.data.forEach(res => {
                 console.log(res.id)
                 console.log('iya')
@@ -248,7 +261,7 @@ const initUnit = () => {
         url: "<?php echo base_url("api/gcore/datamaster/units"); ?>/" + branch_id,
         dataType: "json",
         success: function(res) {
-            let template = '';
+            let template = '<option value="all">All</option>';
             res.data.forEach(res => {
                 console.log(res.id)
                 console.log('iya')
@@ -321,47 +334,6 @@ $('#btnexport_pdf').on('click', function(e){
     var date = $('[name="date"]').val() ? $('[name="date"]').val() : '';
     console.log(date);
     window.location.href = `<?php echo base_url('report/gcore/pdf');?>?area=${area}&cabang=${cabang}&unit=${unit}&date=${date}`;
-});
-
-$('.select2').select2();
-$('.select2').on('select2:closing', function (e) {
-    let branch_id = $('#branch_id').val();
-    var search = $('.select2-search__field').val();
-    console.log('Final Search Value: ' + search);
-
-    $.ajax({
-        type : 'GET',
-        url : "<?php echo base_url("api/gcore/datamaster/units_search"); ?>/"+branch_id + "/" + search,
-        dataType : "json",
-        success:function(res){
-            console.log(res);
-            let template = '';
-            res.data.forEach(res=>{
-                console.log(res.name);
-                session = `<?php echo $this->session->userdata( 'user' )->level ?>`
-                
-                if(session == 'area'){
-                    
-                    sessionId = `<?php echo $this->session->userdata( 'user' )->area_id ?>`
-                    console.log('res', res.area_id)
-                    console.log('session', sessionId)
-                    if (sessionId == res.area_id){
-                        template += `<option value="${res.id}">${res.name}</option>`;
-                    }
-                }else{
-                    template += `<option value="${res.id}">${res.name}</option>`;
-                }
-                
-            })
-            
-            $('[name="unit_id"]').empty();
-            template += `<option value="all">All</option>`;
-            $('[name="unit_id"]').append(template);
-        },
-        error:function(e){
-            console.log(e);
-        }
-    });
 });
 
 jQuery(document).ready(function() {

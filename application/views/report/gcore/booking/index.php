@@ -103,7 +103,7 @@ $this->load->view('temp/MenuBar.php');
 						</div>
 						<div class="col-md-2">
 							<label class="col-form-label">Unit</label>
-							<select class="form-control select2" name="unit_id" id="unit_id" style ="width: 100%">
+							<select class="form-control" name="unit_id" id="unit_id">
 							</select>
 						</div>
 						<?php elseif ( $this->session->userdata( 'user' )->level == 'cabang' ):?>
@@ -111,7 +111,7 @@ $this->load->view('temp/MenuBar.php');
 						<input type = 'hidden' name = 'branch_id' id='branch_id' value = "<?php echo $this->session->userdata('user')->branch_id;?>">
 						<div class="col-md-2">
 							<label class="col-form-label">Unit</label>
-							<select class="form-control select2" name="unit_id" id="unit_id" style ="width: 100%">
+							<select class="form-control" name="unit_id" id="unit_id">
 							</select>
 						</div>
 						<?php else:?>
@@ -127,7 +127,7 @@ $this->load->view('temp/MenuBar.php');
 						</div>
 						<div class="col-md-2">
 							<label class="col-form-label">Unit</label>
-							<select class="form-control select2" name="unit_id" id="unit_id" style ="width: 100%">
+							<select class="form-control" name="unit_id" id="unit_id">
 							</select>
 						</div>
 						<?php endif ;
@@ -139,10 +139,11 @@ $this->load->view('temp/MenuBar.php');
 								<option value="">All</option>
 								<option value="Gadai Reguler">Gadai Reguler</option>
 								<option value="Gadai Reguler GHTS">Gadai Reguler GHTS</option>								
-								<option value="Gadai Opsi Bulanan">Gadai OPSI</option>
+								<option value="Gadai Opsi Bulanan">Gadai Opsi Bulanan</option>
 								<option value="Gadai Smartphone">Gadai Smartphone</option>
 								<option value="Gadai Cicilan">Gadai Cicilan</option>
 								<option value="Gadai Elektronik">Gadai Elektronik</option>
+								<option value="Gadai Opsi ACC">Gadai Opsi ACC</option>
 							</select>
 						</div>
 					<div class="col-lg-2">
@@ -184,6 +185,8 @@ $this->load->view('temp/MenuBar.php');
 									<th class='text-right'>Jenis BJ</th>
 									<th class='text-right'>Created By</th>
 									<th class='text-right'>Approved By</th>
+									<th class='text-right'>Kode Referral</th>
+									<th class='text-right'>Agent</th>
 									<!-- <th class='text-right'>Deskripsi</th> -->
 									<th></th>
 						    	</tr>

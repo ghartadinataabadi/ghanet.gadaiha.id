@@ -117,17 +117,20 @@ class Pencairan extends Authenticated
 		$objPHPExcel->getActiveSheet()->getColumnDimension('S');
 		$objPHPExcel->getActiveSheet()->setCellValue('S1', 'Approved By');
 		$objPHPExcel->getActiveSheet()->getColumnDimension('T');
-		$objPHPExcel->getActiveSheet()->setCellValue('T1', 'Deskripsi Barang');
+		$objPHPExcel->getActiveSheet()->setCellValue('T1', 'Kode Referral');
+		$objPHPExcel->getActiveSheet()->getColumnDimension('U');
+		$objPHPExcel->getActiveSheet()->setCellValue('U1', 'Agent');
 		
 	        if($get = $this->input->post()){
 				 $dateEnd = $get['date-end'];
 				
 									$this->pawn->db2
-									->select(" parent_sge as parent, customers.cif_number as cif, office_name,product_name,customers.name as customer,sge,contract_date,due_date,auction_date,estimated_value,maximum_loan_percentage,loan_amount,admin_fee,monthly_fee,transaction_type,interest_rate,insurance_item_name,created_by,approved_by,
+									->select(" parent_sge as parent, customers.cif_number as cif, pawn_transactions.office_name,product_name,customers.name as customer,sge,contract_date,due_date,auction_date,estimated_value,maximum_loan_percentage,loan_amount,admin_fee,monthly_fee,transaction_type,interest_rate,insurance_item_name,created_by,approved_by,sa_code, sale_agents.name as agent,
 									(select insurance_item_merk from transaction_pawn_electronics where transaction_pawn_electronics.pawn_transaction_id = pawn_transactions.id and pawn_transactions.deleted_at = null) as merk
 												")
 									->from('pawn_transactions')
-									->join('customers','customers.id = pawn_transactions.customer_id')
+									->join('customers','customers.id = pawn_transactions.customer_id', 'left')
+									->join('sale_agents','sale_agents.referral_code = pawn_transactions.sa_code', 'left')
 									->where('contract_date >=', $get['date-start'])
 									->where('contract_date <=', $get['date-end'])
 									->where('pawn_transactions.deleted_at ', null)
@@ -184,7 +187,20 @@ class Pencairan extends Authenticated
 											 
 									$objPHPExcel->getActiveSheet()->setCellValue('Q'.$no, $row->auction_date);	//Tanggal Jatuh Tempo
 									$objPHPExcel->getActiveSheet()->setCellValue('R'.$no, $row->created_by);	//Tanggal Jatuh Tempo									
-									$objPHPExcel->getActiveSheet()->setCellValue('S'.$no, $row->approved_by);	//Tanggal Jatuh Tempo	
+									$objPHPExcel->getActiveSheet()->setCellValue('S'.$no, $row->approved_by);	//Tanggal Jatuh Tempo
+									if($row->sa_code){
+										$sa_code = $row->sa_code;
+									}else{
+										$sa_code = '-';
+									}
+
+									if($row->agent){
+										$agent = $row->agent;
+									}else{
+										$agent = '-';
+									}
+									$objPHPExcel->getActiveSheet()->setCellValue('T'.$no, $sa_code);	//Kode Referral	
+									$objPHPExcel->getActiveSheet()->setCellValue('U'.$no, $agent);	//Kode Referral	
 									// $objPHPExcel->getActiveSheet()->setCellValue('U'.$no, $row->description);				//Deskripsi BJ		 
 									$no++;
 								}	
